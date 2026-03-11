@@ -2,7 +2,7 @@ import Link from "next/link";
 import db from "@/database/client";
 import { categories, posts, tags } from "@/database/schema";
 import { postApi } from "@/api/post";
-import Pagination from "@/app/_components/Pagination";
+import Pagination from "@/app/_components/pagination";
 import NotFound from "@/app/not-found";
 import DeleteBtn from "@/app/_components/deletebtn";
 import SideBar from "@/app/_components/sideBar";
@@ -16,7 +16,7 @@ import { redirect } from "next/navigation";
 export default async function Blog({
     searchParams,
 }: {
-    searchParams: Promise<{ page?: string }>;
+    searchParams: Promise<{ page?: string; categoryId?: string; tagId?: string }>;
 }) {
     // const { page: pageStr } = await searchParams;
 

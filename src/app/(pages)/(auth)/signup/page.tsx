@@ -5,18 +5,17 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const signUpSchema = z.object({
-    name: z.string().min(1, "请填写昵称"),
-    email: z.string().min(1, "请填写邮箱").email("邮箱格式不正确"),
-    password: z.string().min(8, "密码至少 8 位"),
-    confirmPassword: z
-        .string()
-        .min(8, "确认密码至少 8 位")
-        .refine(
-            (data: string) => data.password === data.confirmPassword,
-            { message: "密码不一致" }
-        ),
-});
+const signUpSchema = z
+    .object({
+        name: z.string().min(1, "请填写昵称"),
+        email: z.string().min(1, "请填写邮箱").email("邮箱格式不正确"),
+        password: z.string().min(8, "密码至少 8 位"),
+        confirmPassword: z.string().min(8, "确认密码至少 8 位"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "密码不一致",
+        path: ["confirmPassword"],
+    });
 
 
 export default function SignUpPage() {
@@ -42,7 +41,8 @@ export default function SignUpPage() {
             setError(result.error.message ?? "注册失败");
             return;
         }
-        router.push(result.data?.callbackURL ?? "/");
+        // 注册成功后直接跳转到首页（不再依赖返回的 callbackURL 类型）
+        router.push("/");
     }
     return (
         <main className="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center px-4 py-10">
@@ -109,9 +109,7 @@ export default function SignUpPage() {
                             name="confirmPassword"
                             className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-[var(--foreground)] transition-colors placeholder:text-[var(--muted)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
                         />
-                        {error && (
-                            <p className="text-red-500">{error.confirmPassword}</p>
-                        )}
+                        {error && <p className="text-red-500">{error}</p>}
                     </div>
                     <button
                         type="submit"

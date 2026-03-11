@@ -4,10 +4,8 @@ import { Header } from "@/app/_components/header";
 
 export default function Layout({
     children,
-    modal,
 }: {
     children: React.ReactNode;
-    modal: React.ReactNode;
 }) {
     return (
         <div className="flex min-h-screen flex-col">

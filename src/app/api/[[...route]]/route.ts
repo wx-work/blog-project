@@ -14,9 +14,8 @@ const app = new Hono().basePath("/api");
 app.use("*", cors());
 
 
-const authHandler = auth.handler();
-app.all("/auth", async (c) => authHandler(c.req.raw));
-app.all("/auth/*", async (c) => authHandler(c.req.raw));
+app.all("/auth", async (c) => await auth.handler(c.req.raw));
+app.all("/auth/*", async (c) => await auth.handler(c.req.raw));
 
 // app.use(auth());
 const uuidSchema = z.string().uuid();
@@ -166,19 +165,18 @@ app.post("/posts", async (c) => {
             400
         );
     console.log("parsed12312312312", parsed.data, body);
-    if (!parsed.data.categoryId) {
-        parsed.data.categoryId = null;
-        // return c.json({ error: "分类不能为空", code: 400 }, 400)
-    }
     const result = await db
         .insert(posts)
-        .values(parsed.data)
+        .values({
+            ...parsed.data,
+            categoryId: parsed.data.categoryId ?? null,
+        })
         .returning();
     if (body.tagIds?.length) {
         await db
             .insert(postTags)
             .values(
-                body.tagIds.map((tagId) => ({
+                (body.tagIds as string[]).map((tagId: string) => ({
                     postId: result[0].id,
                     tagId: tagId,
                 }))
@@ -227,7 +225,7 @@ app.patch("/posts/:item", async (c) => {
         await db
             .insert(postTags)
             .values(
-                body.tagIds.map((tagId) => ({ postId: item, tagId: tagId }))
+                (body.tagIds as string[]).map((tagId: string) => ({ postId: item, tagId: tagId }))
             );
     }
     return c.json(result, 200);

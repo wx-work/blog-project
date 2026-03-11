@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { postApi } from "@/api/post";
+import { postApi, Category, Tag } from "@/api/post";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Select } from "antd";
@@ -38,7 +38,7 @@ export default function EditForm({ post }: { post: any }) {
     const router = useRouter();
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-    const [categories, setCategories] = useState<Post[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [tags, setTags] = useState<Tag[]>([]);
     const [categoryId, setCategoryId] = useState<string>('');
     const [tagIds, setTagIds] = useState<string[]>([]);
@@ -46,12 +46,12 @@ export default function EditForm({ post }: { post: any }) {
 
     // 获取下拉及标签多选数据
     const fetchCategories = async () => {
-        const { data: categoriesData, status: categoriesStatus } = await apiFetch<Post>(`/api/categories`);
-        setCategories(categoriesData);
+        const { data: categoriesData, status: categoriesStatus } = await apiFetch<Category[]>(`/api/categories`);
+        setCategories(categoriesData ?? []);
     }
     const fetchTags = async () => {
         const { data: tagsData, status: tagsStatus } = await apiFetch<Tag[]>(`/api/tags`);
-        setTags(tagsData);
+        setTags(tagsData ?? []);
     }
     useEffect(() => {
         setCategoryId(post.categoryId ?? '');
@@ -149,8 +149,6 @@ export default function EditForm({ post }: { post: any }) {
                         分类
                     </label>
                     <Select
-                        name="categoryId"
-                        id="categoryId"
                         className="w-full"
                         showSearch={{
                             filterOption: (input, option) =>
@@ -171,8 +169,6 @@ export default function EditForm({ post }: { post: any }) {
                     </label>
                     <Select
                         mode="multiple"
-                        name="tagIds"
-                        id="tagIds"
                         className="w-full"
                         placeholder="请选择标签，可多选"
                         defaultValue={post.tags.map((tag: any) => tag.id)}

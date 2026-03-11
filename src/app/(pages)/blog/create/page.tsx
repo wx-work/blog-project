@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Post, postApi } from "@/api/post";
+import type { Category, TagItem } from "@/api/post";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Select, Breadcrumb } from "antd";
@@ -44,20 +45,20 @@ export default function BlogCreatePage() {
     const router = useRouter();
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-    const [categories, setCategories] = useState<Post[]>([]);
-    const [tags, setTags] = useState<Tag[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [tags, setTags] = useState<TagItem[]>([]);
     const [categoryId, setCategoryId] = useState<string>('');
     const [tagIds, setTagIds] = useState<string[]>([]);
     const [body, setBody] = useState<string>('');
 
     // 获取下拉及标签多选数据
     const fetchCategories = async () => {
-        const { data: categoriesData } = await apiFetch<Post>(`/api/categories`);
-        setCategories(categoriesData);
+        const { data: categoriesData } = await apiFetch<Category[]>(`/api/categories`);
+        setCategories(categoriesData ?? []);
     };
     const fetchTags = async () => {
-        const { data: tagsData } = await apiFetch<Tag[]>(`/api/tags`);
-        setTags(tagsData);
+        const { data: tagsData } = await apiFetch<TagItem[]>(`/api/tags`);
+        setTags(tagsData ?? []);
     };
     useEffect(() => {
         fetchCategories();
@@ -162,8 +163,6 @@ export default function BlogCreatePage() {
                             分类
                         </label>
                         <Select
-                            name="categoryId"
-                            id="categoryId"
                             className="w-full"
                             showSearch={{
                                 filterOption: (input, option) =>
@@ -181,8 +180,6 @@ export default function BlogCreatePage() {
                         <label htmlFor="tagIds" className={labelClass}>标签</label>
                         <Select
                             mode="multiple"
-                            name="tagIds"
-                            id="tagIds"
                             className="w-full"
                             placeholder="请选择标签，可多选"
                             onChange={(value) => setTagIds(value)}

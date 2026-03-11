@@ -17,6 +17,19 @@ export type Post = {
   updatedAt: string;
 };
 
+/** 文章详情接口返回：包含关联的 category、tags */
+export type PostDetail = Post & {
+  category: Array<{ id: string; name: string; slug: string }> | null;
+  tags: Array<{ id: string; name: string; slug: string }>;
+};
+
+/** 分类（/api/categories 返回项） */
+export type Category = { id: string; name: string; slug: string; parentId?: string | null; createdAt?: string; updatedAt?: string };
+
+/** 标签（/api/tags 返回项） */
+export type Tag = { id: string; name: string; slug: string; createdAt?: string };
+export type TagItem = Tag;
+
 export type PaginateResult = {
   items: Post[];
   total: number;
@@ -31,6 +44,7 @@ export type CreatePostInput = {
   summary?: string;
   thumb?: string;
   categoryId?: string;
+  tagIds?: string[];
   keywords?: string;
   description?: string;
 };
@@ -57,7 +71,9 @@ async function apiFetch<T>(
 }
 
 export const postApi = {
-  async paginate(params: { page?: number; limit?: number } = {}): Promise<PaginateResult> {
+  async paginate(
+    params: { page?: number; limit?: number; category?: string; tag?: string } = {}
+  ): Promise<PaginateResult> {
     const search = new URLSearchParams();
     if (params.page != null) search.set("page", String(params.page));
     if (params.limit != null) search.set("limit", String(params.limit));
@@ -69,8 +85,8 @@ export const postApi = {
     return data;
   },
 
-  async detail(item: string): Promise<Post | null> {
-    const { data, error, status } = await apiFetch<Post>(`/api/posts/${encodeURIComponent(item)}`);
+  async detail(item: string): Promise<PostDetail | null> {
+    const { data, error, status } = await apiFetch<PostDetail>(`/api/posts/${encodeURIComponent(item)}`);
     if (status === 404) return null;
     if (status === 401) return null;
     if (error || !data) throw new Error(error?.message ?? `posts detail ${status}`);

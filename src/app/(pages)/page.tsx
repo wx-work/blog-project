@@ -4,11 +4,7 @@ import { posts } from "@/database/schema";
 import { authClient } from "@/auth-client";
 import Link from "next/link";
 import { Timeline } from "antd";
-
-// import { baseURL } from "@/config";
-
-const baseURL =
-  process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+import { desc } from "drizzle-orm";
 
 type PostItem = {
   id: string;
@@ -19,12 +15,21 @@ type PostItem = {
 };
 
 async function getLatestPosts(): Promise<PostItem[]> {
-  const res = await fetch(`${baseURL}/api/posts?page=1&limit=6`, {
-    next: { revalidate: 60 },
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.items ?? [];
+  const rows = await db
+    .select({
+      id: posts.id,
+      title: posts.title,
+      summary: posts.summary,
+      slug: posts.slug,
+      updatedAt: posts.updatedAt,
+    })
+    .from(posts)
+    .orderBy(desc(posts.createdAt))
+    .limit(6);
+  return rows.map((row) => ({
+    ...row,
+    updatedAt: row.updatedAt instanceof Date ? row.updatedAt.toISOString() : String(row.updatedAt),
+  }));
 }
 
 export default async function Home() {
@@ -87,7 +92,7 @@ export default async function Home() {
           </Link>
         </div>
       )}
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <Timeline
           items={[
             {
@@ -104,7 +109,7 @@ export default async function Home() {
             },
           ]}
         />
-      </div>
+      </div> */}
     </main>
   );
 }

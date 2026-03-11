@@ -39,6 +39,9 @@ export default async function BlogPosts({ params }: { params: Promise<{ slug: st
     }
     const { slug } = await params;
     const post = await postApi.detail(slug);
+    if (!post) {
+        return <NotFound />;
+    }
     const tocItems = tocFromMarkdown(post.body);
     return (
         <>

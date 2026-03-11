@@ -17,7 +17,7 @@ export default function ForgotPasswordPage() {
     const [step, setStep] = useState<"email" | "reset">("email");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [email, setEmail] = useState<string | null>(null);
+    const [email, setEmail] = useState<string>("");
 
     async function handleSendOtp(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -51,6 +51,11 @@ export default function ForgotPasswordPage() {
         const parsed = resetSchema.safeParse({ otp, password });
         if (!parsed.success) {
             setError(Object.values(parsed.error.flatten().fieldErrors).flat().join("；") || "请检查输入");
+            setLoading(false);
+            return;
+        }
+        if (!email) {
+            setError("邮箱信息缺失，请重新发送验证码。");
             setLoading(false);
             return;
         }
