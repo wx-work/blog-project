@@ -1,12 +1,9 @@
 import Link from "next/link";
 import { Header } from "@/app/_components/header";
 
-
-export default function Layout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+/** (pages) 根布局：仅接收 children，符合 Next.js LayoutProps<"/"> */
+export default function Layout(props: { children: React.ReactNode }) {
+    const { children } = props;
     return (
         <div className="flex min-h-screen flex-col">
             {/* <header className="flex justify-center items-center space-x-4">
