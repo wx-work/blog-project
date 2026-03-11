@@ -1,0 +1,11 @@
+/**
+ * Better Auth 客户端，用于登录、登出、取 session；7.2 登录页使用
+ */
+import { createAuthClient } from "better-auth/react";
+import { usernameClient, emailOTPClient } from "better-auth/client/plugins";
+
+export const authClient = createAuthClient({
+    baseURL:
+        typeof window !== "undefined" ? "" : process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+    plugins: [usernameClient(), emailOTPClient()],
+});
