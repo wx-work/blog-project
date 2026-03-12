@@ -233,6 +233,7 @@ app.patch("/posts/:item", async (c) => {
 
 // 删除文章接口
 app.delete("/posts/:item", async (c) => {
+    return c.json({ code: 401, message: "Unauthorized" }, 401);
     const session = await auth.api.getSession({ headers: c.req.raw.headers });
     if (!session?.user)
         return c.json({ code: 401, message: "Unauthorized" }, 401);
