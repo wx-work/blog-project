@@ -46,6 +46,15 @@ export default async function Home() {
           生活、技术、工作
         </p>
       </section>
+      <section>
+        <h2 className="section-title mb-6 text-xl font-semibold text-[var(--foreground)]">
+          About
+        </h2>
+        <p className="max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
+          hi,欢迎来到老王的博客小站，该小站由Next.js， TypeScript, Drizzle, PostgreSQL, Better Auth, Hono, and Tailwind CSS 搭建。
+          欢迎访问和使用，如果你有任何问题或建议，请随时联系我。
+        </p>
+        </section>
       <h2 className="section-title mb-6 text-xl font-semibold text-[var(--foreground)]">
         最新文章
       </h2>
