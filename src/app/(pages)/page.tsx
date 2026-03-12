@@ -53,7 +53,7 @@ export default async function Home() {
         <p className=" text-lg leading-relaxed text-[var(--muted)]">
           hi，欢迎来到老王的博客小站，该小站由Next.js,TypeScript, Drizzle, PostgreSQL, Better Auth, Hono, and Tailwind CSS 搭建。
         </p>
-        <p className="max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
+        <p className="text-lg leading-relaxed text-[var(--muted)]">
           欢迎访问和使用，如果你有任何问题或建议，请随时联系我。
         </p>
         </section>
