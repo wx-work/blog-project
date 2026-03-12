@@ -233,28 +233,29 @@ app.patch("/posts/:item", async (c) => {
 
 // 删除文章接口
 app.delete("/posts/:item", async (c) => {
+    // 暂时无法删除
     return c.json({ code: 401, message: "Unauthorized" }, 401);
-    const session = await auth.api.getSession({ headers: c.req.raw.headers });
-    if (!session?.user)
-        return c.json({ code: 401, message: "Unauthorized" }, 401);
+    // const session = await auth.api.getSession({ headers: c.req.raw.headers });
+    // if (!session?.user)
+    //     return c.json({ code: 401, message: "Unauthorized" }, 401);
 
-    const item = c.req.param("item");
-    const itemParsed = uuidSchema.safeParse(item);
-    if (!itemParsed.success)
-        return c.json(
-            {
-                error: "验证失败",
-                code: 400,
-                details: itemParsed.error.flatten().fieldErrors,
-            },
-            400
-        );
-    const result = await db
-        .delete(posts)
-        .where(eq(posts.id, item))
-        .returning();
-    if (!result[0]) return c.json({ error: "无信息", code: 404 });
-    return c.json(result, 200);
+    // const item = c.req.param("item");
+    // const itemParsed = uuidSchema.safeParse(item);
+    // if (!itemParsed.success)
+    //     return c.json(
+    //         {
+    //             error: "验证失败",
+    //             code: 400,
+    //             details: itemParsed.error.flatten().fieldErrors,
+    //         },
+    //         400
+    //     );
+    // const result = await db
+    //     .delete(posts)
+    //     .where(eq(posts.id, item))
+    //     .returning();
+    // if (!result[0]) return c.json({ error: "无信息", code: 404 });
+    // return c.json(result, 200);
 });
 
 // 所有分类
