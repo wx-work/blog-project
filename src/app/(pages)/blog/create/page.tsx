@@ -35,7 +35,7 @@ const postSchema = z.object({
         .string()
         .min(1, "Slug 不能为空")
         .regex(/^[a-z0-9-]+$/, "Slug 仅允许小写字母、数字、连字符"),
-    summary: z.string().max(10).optional(),
+    summary: z.string().max(100).optional(),
     body: z.string().min(1, "正文不能为空"),
 });
 

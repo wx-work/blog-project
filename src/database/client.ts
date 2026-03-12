@@ -4,7 +4,7 @@ import { Pool } from 'pg';
 const connectionString = process.env.DATABASE_URL!;
 
 function createDb() {
-    const pool = new Pool({ connectionString, max: 10 });
+    const pool = new Pool({ connectionString, max: 10, connectionTimeoutMillis: 15000 });
     return drizzle({ client: pool });
 }
 
