@@ -38,7 +38,7 @@ export default async function Home() {
 
   return (
     <main className="container mx-auto min-w-0 max-w-6xl px-4 py-8 sm:px-6 sm:py-12 lg:py-16">
-      <section className="mb-16">
+      <section className="mb-6">
         <h1 className="mb-3 text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-4xl">
           WELCOME
         </h1>
@@ -46,12 +46,14 @@ export default async function Home() {
           生活、技术、工作
         </p>
       </section>
-      <section>
-        <h2 className="section-title mb-6 text-xl font-semibold text-[var(--foreground)]">
+      <section className="mb-6">
+        <h2 className="section-title mb-3 text-xl font-semibold text-[var(--foreground)]">
           About
         </h2>
+        <p className=" text-lg leading-relaxed text-[var(--muted)]">
+          hi，欢迎来到老王的博客小站，该小站由Next.js,TypeScript, Drizzle, PostgreSQL, Better Auth, Hono, and Tailwind CSS 搭建。
+        </p>
         <p className="max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
-          hi,欢迎来到老王的博客小站，该小站由Next.js， TypeScript, Drizzle, PostgreSQL, Better Auth, Hono, and Tailwind CSS 搭建。
           欢迎访问和使用，如果你有任何问题或建议，请随时联系我。
         </p>
         </section>
