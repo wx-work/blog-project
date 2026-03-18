@@ -100,9 +100,9 @@ export default async function Home() {
                     {post.summary}
                   </p>
                 )}
-                <time dateTime={post.updatedAt} className="text-xs text-[var(--muted)]">
+                {/* <time dateTime={post.updatedAt} className="text-xs text-[var(--muted)]">
                   {new Date(post.updatedAt).toLocaleDateString("zh-CN")}
-                </time>
+                </time> */}
               </Link>
             </li>
           ))}
